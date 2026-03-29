@@ -8,6 +8,7 @@ Group=www-data
 WorkingDirectory=/var/www/shakyrtu_studio_online
 Environment="PATH=/var/www/shakyrtu_studio_online/venv/bin"
 EnvironmentFile=-/var/www/shakyrtu_studio_online/.env
+Environment=BEHIND_REVERSE_PROXY=1
 ExecStart=/var/www/shakyrtu_studio_online/venv/bin/gunicorn -c gunicorn.conf.py wsgi:app
 Restart=always
 RestartSec=3

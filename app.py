@@ -38,6 +38,18 @@ app = Flask(__name__)
 app.secret_key = os.environ.get("FLASK_SECRET_KEY", "dev-secret-change-in-production")
 app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=14)
 
+# За nginx с location /prefix/ и заголовком X-Forwarded-Prefix (см. deploy/nginx-snippet.conf)
+if os.environ.get("BEHIND_REVERSE_PROXY", "").lower() in ("1", "true", "yes"):
+    from werkzeug.middleware.proxy_fix import ProxyFix
+
+    app.wsgi_app = ProxyFix(
+        app.wsgi_app,
+        x_for=1,
+        x_proto=1,
+        x_host=1,
+        x_prefix=1,
+    )
+
 SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
 SERVICE_ACCOUNT_FILE = os.path.join(BASE_DIR, "credentials.json")
 ALBUMS_FILE = os.path.join(BASE_DIR, "albums.json")
