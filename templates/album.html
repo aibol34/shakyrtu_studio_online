@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>{{ folder_name }} — {{ owner.brand_name }}</title>
+  <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+  <link rel="dns-prefetch" href="https://drive.google.com">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
+</head>
+<body class="gallery-body">
+  <script type="application/json" id="gallery-config">{{ {"folderId": folder_id, "owner": owner, "folderName": folder_name} | tojson }}</script>
+
+  <div class="gallery-layout">
+  <div class="gallery-shell">
+    <header class="site-header" id="site-header">
+      <div class="header-inner">
+        <div class="header-brand">
+          <img class="header-avatar" src="{{ url_for('static', filename='profile.jpg') }}" width="48" height="48" alt="">
+          <div class="header-titles">
+            <h1 class="header-title">{{ folder_name }}</h1>
+            <p class="header-sub">{{ owner.photographer_name }}</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a class="icon-btn icon-btn--accent" href="{{ owner.whatsapp }}" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.018-1.365l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+          <a class="icon-btn" href="{{ owner.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="icon-btn" href="/download-all/{{ folder_id }}" aria-label="Скачать все фото" title="Скачать всё">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="gallery-toolbar">
+      <label class="sr-only" for="sort-select">Сортировка</label>
+      <select id="sort-select" class="sort-select">
+        <option value="old" selected>Сначала старые</option>
+        <option value="new">Сначала новые</option>
+        <option value="name">По имени</option>
+      </select>
+      <p class="photo-count">В коллекции <strong id="photo-count-num">0</strong> фото</p>
+    </div>
+
+    <div id="gallery-skeletons" class="gallery-skeleton-wrap" aria-hidden="true">
+      <div class="gallery-skeleton"></div><div class="gallery-skeleton"></div><div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div><div class="gallery-skeleton"></div><div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div><div class="gallery-skeleton"></div><div class="gallery-skeleton"></div>
+      <div class="gallery-skeleton"></div>
+    </div>
+
+    <div id="gallery-masonry" class="gallery-masonry"></div>
+    <div id="gallery-status" class="gallery-status hidden" role="status"></div>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div class="footer-cta">
+        <h3>Закажите съёмку</h3>
+        <p>Индивидуальная онлайн-галерея для гостей, архив в высоком качестве и бережная подача кадров.</p>
+      </div>
+      <div class="footer-links">
+        <a class="footer-link footer-link--dl" href="/download-all/{{ folder_id }}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
+          Скачать все
+        </a>
+        <a class="footer-link footer-link--wa" href="{{ owner.whatsapp }}" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.018-1.365l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.884 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          WhatsApp
+        </a>
+        <a class="footer-link footer-link--ig" href="{{ owner.instagram }}" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          Instagram
+        </a>
+      </div>
+    </div>
+  </footer>
+  </div>
+
+  <button type="button" class="fab fab-down" id="fab-down" aria-label="Вниз">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  </button>
+  <button type="button" class="fab" id="fab-top" aria-label="Наверх">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+  </button>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="lightbox-backdrop"></div>
+    <button type="button" class="lightbox-close" id="lightbox-close" aria-label="Закрыть">✕</button>
+    <button type="button" class="lightbox-nav lightbox-nav--prev" id="lightbox-prev" aria-label="Предыдущее">‹</button>
+    <button type="button" class="lightbox-nav lightbox-nav--next" id="lightbox-next" aria-label="Следующее">›</button>
+    <div class="lightbox-stage" id="lightbox-stage">
+      <div class="lightbox-loader hidden" id="lightbox-loader"></div>
+      <img class="lightbox-img" id="lightbox-img" alt="">
+    </div>
+    <div class="lightbox-meta">
+      <p class="lightbox-caption" id="lightbox-caption"></p>
+      <p class="lightbox-date" id="lightbox-date"></p>
+      <a class="lightbox-download" id="lightbox-download" href="#" target="_blank" rel="noopener">Скачать оригинал</a>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/gallery.js') }}" defer></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ owner.brand_name }} — онлайн-галереи</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+</head>
+<body class="landing-body">
+  <div class="landing-noise" aria-hidden="true"></div>
+  <header class="landing-header">
+    <span class="landing-logo">{{ owner.brand_name }}</span>
+    <a class="landing-admin-link" href="{{ url_for('admin_login_page') }}">Admin</a>
+  </header>
+
+  <main class="landing-hero">
+    <p class="landing-eyebrow">Private client galleries</p>
+    <h1 class="landing-title">Фотографии вашего события<br><span class="landing-gradient">в одной изысканной галерее</span></h1>
+    <p class="landing-lead">Мгновенный доступ с телефона, без регистрации. Безопасность, скорость и визуальная чистота — как у лучших брендов.</p>
+    <div class="landing-actions">
+      <a class="landing-btn landing-btn-primary" href="{{ owner.whatsapp }}" target="_blank" rel="noopener noreferrer">Связаться в WhatsApp</a>
+      <a class="landing-btn landing-btn-ghost" href="{{ owner.instagram }}" target="_blank" rel="noopener noreferrer">Instagram</a>
+    </div>
+  </main>
+
+  <section class="landing-features">
+    <article class="landing-card">
+      <div class="landing-card-icon">◆</div>
+      <h2>Мгновенная загрузка</h2>
+      <p>Умная подгрузка кадров — даже при тысячах файлов.</p>
+    </article>
+    <article class="landing-card">
+      <div class="landing-card-icon">◇</div>
+      <h2>Минимализм</h2>
+      <p>Ничего лишнего: только ваши фото и эмоции.</p>
+    </article>
+    <article class="landing-card">
+      <div class="landing-card-icon">○</div>
+      <h2>Мобильный UX</h2>
+      <p>Жесты, свайпы и плавные анимации как в приложении.</p>
+    </article>
+  </section>
+
+  <footer class="landing-footer">
+    <p>© {{ owner.brand_name }} · {{ owner.photographer_name }}</p>
+  </footer>
+</body>
+</html>

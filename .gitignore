@@ -1,0 +1,25 @@
+# Секреты — никогда не коммитить
+credentials.json
+.env
+.env.*
+
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+
+# Локальные данные (при желании закоммить albums.json — уберите строку)
+# albums.json
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+Desktop.ini
