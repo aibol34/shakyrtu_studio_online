@@ -1,4 +1,10 @@
 (function () {
+  function appPath(p) {
+    const r = typeof window.APP_ROOT === "string" ? window.APP_ROOT : "";
+    if (!p.startsWith("/")) p = "/" + p;
+    return r + p;
+  }
+
   const folderLink = document.getElementById("folderLink");
   const addBtn = document.getElementById("addAlbumBtn");
   const addResult = document.getElementById("addResult");
@@ -26,7 +32,7 @@
     addBtn.disabled = true;
     addResult.classList.add("hidden");
     try {
-      const res = await fetch("/add-album", {
+      const res = await fetch(appPath("/add-album"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ folder_link: link }),
@@ -61,9 +67,9 @@
   async function loadAlbums() {
     albumsList.innerHTML = '<div class="admin-loading">Загрузка…</div>';
     try {
-      const res = await fetch("/albums", { credentials: "same-origin" });
+      const res = await fetch(appPath("/albums"), { credentials: "same-origin" });
       if (res.status === 401) {
-        window.location.href = "/admin/login";
+        window.location.href = appPath("/admin/login");
         return;
       }
       const data = await res.json();
@@ -132,13 +138,13 @@
   async function removeAlbum(id) {
     if (!confirm("Убрать этот альбом с сайта? Папка на Google Drive не удалится.")) return;
     try {
-      const res = await fetch("/remove-album/" + id, {
+      const res = await fetch(appPath("/remove-album/" + id), {
         method: "DELETE",
         credentials: "same-origin",
       });
       const data = await res.json();
       if (res.status === 401) {
-        window.location.href = "/admin/login";
+        window.location.href = appPath("/admin/login");
         return;
       }
       if (!data.success) {
@@ -154,8 +160,8 @@
   refreshBtn.addEventListener("click", loadAlbums);
 
   logoutBtn.addEventListener("click", async () => {
-    await fetch("/admin/logout", { method: "POST", credentials: "same-origin" });
-    window.location.href = "/admin/login";
+    await fetch(appPath("/admin/logout"), { method: "POST", credentials: "same-origin" });
+    window.location.href = appPath("/admin/login");
   });
 
   loadAlbums();

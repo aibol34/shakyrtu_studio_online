@@ -9,6 +9,12 @@
 
   const cfg = JSON.parse(cfgEl.textContent.trim());
   const folderId = cfg.folderId;
+  const appRoot = typeof cfg.appRoot === "string" ? cfg.appRoot : "";
+
+  function appPath(p) {
+    if (!p.startsWith("/")) p = "/" + p;
+    return appRoot + p;
+  }
 
   const CHUNK = 36;
   const SWIPE_THR = 42;
@@ -73,7 +79,7 @@
       do {
         const p = new URLSearchParams({ sort: sortKey });
         if (token) p.set("page_token", token);
-        const res = await fetch(`/photos/${folderId}?` + p.toString());
+        const res = await fetch(appPath(`/photos/${folderId}`) + "?" + p.toString());
         const data = await res.json();
         if (data.error) {
           setStatus("Ошибка: " + data.error, true);

@@ -246,7 +246,7 @@ def add_album():
             "message": "Папка добавлена",
             "folder_id": folder["id"],
             "folder_name": folder["name"],
-            "album_url": f"/album/{folder['id']}",
+            "album_url": url_for("album_page", folder_id=folder["id"]),
             "google_drive_folder": folder.get("webViewLink", folder_link),
         }
     )
@@ -277,7 +277,7 @@ def list_albums():
                 "folder_id": album["folder_id"],
                 "folder_name": album["folder_name"],
                 "drive_url": album["drive_url"],
-                "album_url": f"/album/{album['folder_id']}",
+                "album_url": url_for("album_page", folder_id=album["folder_id"]),
                 "added_at": added_dt.strftime("%d.%m.%Y %H:%M"),
                 "days_passed": days_passed,
                 "days_left": days_left,

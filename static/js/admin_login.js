@@ -1,4 +1,10 @@
 (function () {
+  function appPath(p) {
+    const r = typeof window.APP_ROOT === "string" ? window.APP_ROOT : "";
+    if (!p.startsWith("/")) p = "/" + p;
+    return r + p;
+  }
+
   const form = document.getElementById("loginForm");
   const password = document.getElementById("password");
   const btn = document.getElementById("loginBtn");
@@ -10,7 +16,7 @@
     btn.disabled = true;
     btn.textContent = "…";
     try {
-      const res = await fetch("/admin/login", {
+      const res = await fetch(appPath("/admin/login"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: password.value }),
@@ -18,7 +24,7 @@
       });
       const data = await res.json().catch(() => ({}));
       if (res.ok && data.success) {
-        window.location.href = "/admin";
+        window.location.href = appPath("/admin");
         return;
       }
       err.textContent = data.message || "Неверный ключ";

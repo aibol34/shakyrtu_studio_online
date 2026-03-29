@@ -21,6 +21,7 @@
     <p class="admin-login-error hidden" id="loginError"></p>
     <p class="admin-login-foot"><a href="{{ url_for('landing') }}">На главную</a></p>
   </div>
+  <script>window.APP_ROOT = {{ request.script_root|tojson }};</script>
   <script src="{{ url_for('static', filename='js/admin_login.js') }}" defer></script>
 </body>
 </html>

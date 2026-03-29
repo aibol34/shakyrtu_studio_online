@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/gallery.css') }}">
 </head>
 <body class="gallery-body">
-  <script type="application/json" id="gallery-config">{{ {"folderId": folder_id, "owner": owner, "folderName": folder_name} | tojson }}</script>
+  <script type="application/json" id="gallery-config">{{ {"folderId": folder_id, "owner": owner, "folderName": folder_name, "appRoot": (request.script_root or "")} | tojson }}</script>
 
   <div class="gallery-layout">
   <div class="gallery-shell">
@@ -30,7 +30,7 @@
           <a class="icon-btn" href="{{ owner.instagram }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
           </a>
-          <a class="icon-btn" href="/download-all/{{ folder_id }}" aria-label="Скачать все фото" title="Скачать всё">
+          <a class="icon-btn" href="{{ url_for('download_all', folder_id=folder_id) }}" aria-label="Скачать все фото" title="Скачать всё">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 21h14"/></svg>
           </a>
         </div>
